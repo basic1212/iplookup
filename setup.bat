@@ -1,7 +1,7 @@
 @echo off
 echo Vérification de Node.js...
 
-:: Vérifier si Node.js est installé
+
 node -v >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo Node.js n'est pas installé. Veuillez installer Node.js depuis https://nodejs.org/
@@ -10,7 +10,7 @@ IF %ERRORLEVEL% NEQ 0 (
 
 echo Node.js est installé.
 
-:: Installation des dépendances
+
 echo Installation des modules depuis package.json...
 npm install
 
