@@ -1,0 +1,11 @@
+{
+  "name": "iplookuptoolbybasic",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "axios": "^X.X.X",
+    "chalk": "^X.X.X",
+    "cli-spinner": "^0.2.10",
+    "portscanner": "^2.2.0"
+  }
+}
