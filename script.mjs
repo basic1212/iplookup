@@ -15,6 +15,8 @@ const infoColor = chalk.green;
 const errorColor = chalk.red;
 const exitColor = chalk.red;
 
+let history = [];
+
 function showMenu() {
   console.clear();
   console.log(titleColor(`
@@ -26,6 +28,7 @@ function showMenu() {
             ╚═╝╚═╝        ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝
                         "Created by basicx2x2r"     
   `));
+
   console.log(optionColor(`[1] LOOKUP IP INFO`));
   console.log(optionColor(`[2] IP PORT SCAN`));
   console.log(exitColor(`[0] Exit`));
@@ -41,10 +44,12 @@ async function lookupIP(ip) {
     spinner.stop(true);
     console.log(infoColor("Informations IP :"));
     console.log(response.data);
+    history.push(`Lookup pour IP ${ip}: ${JSON.stringify(response.data)}`);
   } catch (error) {
     spinner.stop(true);
-    console.log(errorColor("Erreur lors de la recuperation des informations IP."));
+    console.log(errorColor("Erreur lors de la récupération des informations IP."));
   }
+  await waitForUserInput();
 }
 
 async function portScan(ip) {
@@ -55,6 +60,16 @@ async function portScan(ip) {
     const status = await portscanner.checkPortStatus(port, ip);
     console.log(`Port ${port}: ${status === 'open' ? infoColor('OUVERT') : errorColor('FERMER')}`);
   }
+  history.push(`Scan de ports pour ${ip}`);
+  await waitForUserInput();
+}
+
+function waitForUserInput() {
+  return new Promise((resolve) => {
+    rl.question(infoColor("\nAppuyez sur Entrée pour revenir au menu..."), () => {
+      resolve();
+    });
+  });
 }
 
 function main() {
@@ -63,12 +78,16 @@ function main() {
     switch (choice) {
       case "1":
         rl.question(optionColor("Entrez l'adresse IP à rechercher : "), (ip) => {
-          lookupIP(ip).then(() => main());
+          lookupIP(ip).then(() => {
+            main(); 
+          });
         });
         break;
       case "2":
         rl.question(optionColor("Entrez l'adresse IP à scanner : "), (ip) => {
-          portScan(ip).then(() => main());
+          portScan(ip).then(() => {
+            main(); 
+          });
         });
         break;
       case "0":
@@ -76,7 +95,7 @@ function main() {
         rl.close();
         break;
       default:
-        console.log(errorColor("Choix invalide. Veuillez ressayer."));
+        console.log(errorColor("Choix invalide. Veuillez réessayer."));
         setTimeout(main, 1500);
     }
   });
