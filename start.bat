@@ -1,7 +1,6 @@
 @echo off
 echo Démarrage du script...
 
-:: Exécute le script principal
 node script.mjs
 
 IF %ERRORLEVEL% NEQ 0 (
